@@ -16,14 +16,14 @@ module.exports = {
 
 	async logSystemInformation  () {
 		try {
-			let installedNodeVersion = execSync("node -v", { encoding: "utf-8" }).replace("v", "").replace(/(?:\r\n|\r|\n)/g, "");
+			const installedNodeVersion = execSync("node -v", { encoding: "utf-8" }).replace("v", "").replace(/(?:\r\n|\r|\n)/g, "");
 
 			const staticData = await si.get({
 				system: "manufacturer, model, virtual",
 				osInfo: "platform, distro, release, arch",
 				versions: "kernel, node, npm, pm2"
 			});
-			let systemDataString = `System information:
+			const systemDataString = `System information:
 					### SYSTEM:   manufacturer: ${staticData.system.manufacturer}; model: ${staticData.system.model}; virtual: ${staticData.system.virtual}
 					### OS:       platform: ${staticData.osInfo.platform}; distro: ${staticData.osInfo.distro}; release: ${staticData.osInfo.release}; arch: ${staticData.osInfo.arch}; kernel: ${staticData.versions.kernel}
 					### VERSIONS: electron: ${process.versions.electron}; used node: ${staticData.versions.node}; installed node: ${installedNodeVersion}; npm: ${staticData.versions.npm}; pm2: ${staticData.versions.pm2}

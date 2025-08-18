@@ -7,6 +7,12 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.ai-motivation:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 .motivation-title {
@@ -54,16 +60,6 @@
   text-align: center;
   font-style: italic;
   padding: 20px;
-}
-
-/* Animation for motivation updates */
-.ai-motivation {
-  transition: all 0.3s ease-in-out;
-}
-
-.ai-motivation:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Responsive design for different screen sizes */

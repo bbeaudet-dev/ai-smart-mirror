@@ -19,7 +19,7 @@ app.use(morgan('combined'));
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? false 
-    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:8080', 'http://127.0.0.1:8080'],
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));

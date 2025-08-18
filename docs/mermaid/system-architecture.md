@@ -1,63 +1,137 @@
 # System Architecture
 
+## High-Level Architecture
+
 ```mermaid
 graph TB
-    subgraph Hardware["Physical Hardware"]
-        RP[Raspberry Pi 5<br/>Main Computer]
-        MON[ARZOPA Monitor<br/>16 inch 2.5K Display]
-        MIRROR[Two-Way Mirror<br/>20 x 16 inches]
-        WEBCAM[USB Webcam<br/>Image Capture]
-        FRAME[Custom Frame<br/>Houses Components]
-        PWR[60W Power Supply<br/>USB-C PD]
-        BTN[Power Button<br/>System Control]
+    subgraph "Frontend (MagicMirror²)"
+        A[Main App] --> B[Module Manager]
+        B --> C[Clock Module]
+        B --> D[Weather Module]
+        B --> E[Calendar Module]
+        B --> F[AI Motivation Module]
+        B --> G[AI Outfit Module]
+        B --> H[Other Modules]
     end
 
-    subgraph Software["Software Stack"]
-        REACT[React Frontend<br/>Smart Mirror UI]
-        SERVER[Node.js Server<br/>API Integration]
-        OPENAI[OpenAI Vision API<br/>Image Analysis]
-        MOCK[Mock Data APIs<br/>Weather, Calendar, News]
+    subgraph "Backend (Node.js)"
+        I[Express Server] --> J[AI Routes]
+        I --> K[Auth Routes]
+        I --> L[Calendar Routes]
+        I --> M[API Routes]
+        J --> N[OpenAI Service]
+        J --> O[Prompt Service]
+        L --> P[Calendar Service]
     end
 
-    subgraph Features["Smart Mirror Features"]
-        TIME[Time & Date<br/>Real-time Clock]
-        WEATHER[Weather Panel<br/>Current + Forecast]
-        CALENDAR[Calendar Panel<br/>Today's Schedule]
-        ROUTINE[Routine Panel<br/>Morning/Evening Tasks]
-        NEWS[News Panel<br/>Latest Headlines]
-        HOROSCOPE[Horoscope Panel<br/>Daily Reading]
-        OUTFIT[Outfit Analysis<br/>AI Commentary]
-        MOTIVATION[Motivational Messages<br/>AI Generated]
+    subgraph "External APIs"
+        Q[OpenAI API]
+        R[Weather APIs]
+        S[Google Calendar API]
     end
 
-    subgraph Connections["System Connections"]
-        BTN -->|Power On/Off| RP
-        RP -->|micro HDMI| MON
-        MON -->|Behind| MIRROR
-        WEBCAM -->|USB| RP
-        PWR -->|Powers| RP
-        PWR -->|Powers| MON
-        FRAME -->|Houses All| Hardware
+    subgraph "Configuration"
+        T[config.js]
+        U[.env files]
     end
 
-    subgraph Processing["Data Processing"]
-        RP -->|Serves| REACT
-        RP -->|Runs| SERVER
-        SERVER -->|Calls| OPENAI
-        SERVER -->|Uses| MOCK
-        WEBCAM -->|Video Stream| SERVER
-        SERVER -->|Updates| REACT
+    A --> I
+    T --> A
+    U --> I
+    N --> Q
+    P --> S
+    D --> R
+
+    style A fill:#e3f2fd
+    style I fill:#f3e5f5
+    style Q fill:#e8f5e8
+    style T fill:#fff3e0
+```
+
+## Module Communication Architecture
+
+```mermaid
+graph LR
+    subgraph "MagicMirror² Core"
+        A[Module Manager]
+        B[Notification System]
     end
 
-    subgraph Future["Future Integrations"]
-        GOOGLE[Google Calendar API]
-        WEATHER_API[Weather API]
-        NEWS_API[News API]
-        FITNESS[Fitness Data APIs]
+    subgraph "Data Sources"
+        C[Weather Module]
+        D[Calendar Module]
+        E[Clock Module]
+        F[User Profile]
     end
 
-    MOCK -.->|Replace with| GOOGLE
-    MOCK -.->|Replace with| WEATHER_API
-    MOCK -.->|Replace with| NEWS_API
-    MOCK -.->|Add| FITNESS
+    subgraph "AI Modules"
+        G[AI Motivation]
+        H[AI Outfit]
+    end
+
+    subgraph "Backend Services"
+        I[OpenAI Service]
+        J[Prompt Service]
+    end
+
+    A --> B
+    C -->|WEATHER_UPDATED| B
+    D -->|CALENDAR_EVENTS| B
+    E -->|CLOCK_MINUTE| B
+    B --> G
+    B --> H
+    G --> I
+    H --> I
+    I --> J
+
+    style A fill:#e3f2fd
+    style B fill:#e1f5fe
+    style G fill:#f3e5f5
+    style H fill:#f3e5f5
+    style I fill:#e8f5e8
+```
+
+## File Structure Architecture
+
+```mermaid
+graph TD
+    A[ai-smart-mirror/] --> B[config/]
+    A --> C[modules/]
+    A --> D[server/]
+    A --> E[docs/]
+    A --> F[public/]
+    A --> G[js/]
+
+    B --> B1[config.js]
+    B --> B2[en.json]
+    B --> B3[translations.js]
+
+    C --> C1[default/]
+    C --> C2[ai-motivation/]
+    C --> C3[ai-outfit/]
+
+    C1 --> C1A[clock/]
+    C1 --> C1B[weather/]
+    C1 --> C1C[calendar/]
+
+    D --> D1[routes/]
+    D --> D2[services/]
+    D --> D3[server.js]
+
+    D1 --> D1A[ai.js]
+    D1 --> D1B[auth.js]
+    D1 --> D1C[calendar.js]
+
+    D2 --> D2A[openai.js]
+    D2 --> D2B[promptService.js]
+    D2 --> D2C[weatherService.js]
+
+    E --> E1[mermaid/]
+    E --> E2[PI-SETUP.md]
+
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#e1f5fe
 ```

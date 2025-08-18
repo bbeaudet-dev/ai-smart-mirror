@@ -1,11 +1,13 @@
 # This workflow will run a spellcheck on the codebase.
-# It runs a few days before each release. At 00:00 on day-of-month 27 in March, June, September, and December.
+# Modified for AI Smart Mirror project - runs on push/PR instead of schedule
 
 name: Run Spellcheck
 
 on:
-  schedule:
-    - cron: "0 0 27 3,6,9,12 *"
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -16,8 +18,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: develop
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:

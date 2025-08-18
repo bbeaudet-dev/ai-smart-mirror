@@ -12,14 +12,29 @@ let config = {
 	timeFormat: 12, // 12-hour format with AM/PM
 	units: "imperial", // Use imperial units for US
 
+	// Global user profile - shared across all AI modules
+	userProfile: {
+		// User must configure these values
+		gender: "", // "male", "female", "non-binary"
+		location: "", // User's location
+		stylePreferences: {
+			weekday: "", // "smart-casual", "business", "casual"
+			weekend: "", // "casual", "athletic", "dressy"
+			holiday: "", // "festive", "casual", "formal"
+			interview: "", // "business", "smart-casual"
+			birthday: "", // "fun", "casual", "dressy"
+			workout: "" // "athletic", "casual"
+		}
+	},
+
 	modules: [
-		{
-			module: "alert",
-		},
+		// TOP BAR MODULES
 		{
 			module: "updatenotification",
 			position: "top_bar"
 		},
+
+		// TOP LEFT MODULES
 		{
 			module: "clock",
 			position: "top_left", 
@@ -44,18 +59,18 @@ let config = {
 				]
 			}
 		},
+
+		// TOP CENTER MODULES
 		{
 			module: "ai-motivation", 
 			position: "top_center",
 			config: {
 				updateInterval: 60000, // 1 minute
-				apiEndpoint: "http://localhost:5000/api/ai/motivation"
+				apiEndpoint: "http://localhost:5001/api/ai/motivation"
 			}
 		},
-		{
-			module: "compliments",
-			position: "lower_third"
-		},
+
+		// TOP RIGHT MODULES
 		{
 			module: "weather",
 			position: "top_right",
@@ -82,6 +97,24 @@ let config = {
 			}
 		},
 		{
+			module: "ai-outfit",
+			position: "top_right",
+			config: {
+				updateInterval: 900000, // 15 minutes
+				apiEndpoint: "http://localhost:5001/api/ai/outfit-recommendation",
+				showWeather: true,
+				showTimestamp: false
+			}
+		},
+
+		// LOWER THIRD MODULES
+		{
+			module: "compliments",
+			position: "lower_third"
+		},
+
+		// BOTTOM BAR MODULES
+		{
 			module: "newsfeed",
 			position: "bottom_bar",
 			config: {
@@ -96,6 +129,11 @@ let config = {
 				updateInterval: 10 * 60 * 1000, // 10 minutes
 				animationSpeed: 2.5 * 1000 // 2.5 seconds
 			}
+		},
+
+		// ALERT MODULES (can appear anywhere)
+		{
+			module: "alert",
 		}
 	]
 };

@@ -3,7 +3,7 @@
 Module.register("ai-motivation", {
   defaults: {
     updateInterval: 600000, // 10 minutes
-    apiEndpoint: "http://localhost:5000/api/ai/motivation",
+    apiEndpoint: "http://localhost:5001/api/ai/motivation",
     timeOfDay: "morning",
     mood: "neutral",
     showTimestamp: false

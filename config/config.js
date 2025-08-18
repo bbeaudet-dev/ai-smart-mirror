@@ -12,7 +12,7 @@ let config = {
 	timeFormat: 12, // 12-hour format with AM/PM
 	units: "imperial", // Use imperial units for US
 
-	// Global user profile - shared across all AI modules
+	// TODO Global user profile - shared across all AI modules
 	userProfile: {
 		// User must configure these values
 		gender: "", // "male", "female", "non-binary"

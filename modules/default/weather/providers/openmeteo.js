@@ -337,7 +337,9 @@ WeatherProvider.register("openmeteo", {
 					// No usable data?
 					return;
 				}
-				this.fetchedLocationName = `${data.city}, ${data.principalSubdivisionCode}`;
+				// Remove country code from location display (e.g., "US-NY" -> "NY")
+				const stateCode = data.principalSubdivisionCode ? data.principalSubdivisionCode.split('-')[1] || data.principalSubdivisionCode : '';
+				this.fetchedLocationName = stateCode ? `${data.city}, ${stateCode}` : data.city;
 			})
 			.catch((request) => {
 				Log.error("Could not load data ... ", request);

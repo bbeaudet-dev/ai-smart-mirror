@@ -20,6 +20,7 @@ class PromptService {
     const { 
       temperature, 
       condition, 
+      weatherCode,
       chanceOfRain, 
       location, 
       timeOfDay,
@@ -32,70 +33,89 @@ class PromptService {
       windDirection,
       uvIndex,
       visibility,
-      feelsLike
+      feelsLike,
+      gender,
+      missingData
     } = weatherData;
     
     let timeContext = '';
     let forecastContext = '';
+    let severeWeatherAlert = '';
+    let genderContext = '';
+    let weatherContext = '';
+    
+    // Check for severe weather conditions based on weather code
+    if (weatherCode) {
+      const severeCodes = [95, 96, 99, 82, 75, 67]; // thunderstorm, violent rain, heavy snow, freezing rain
+      if (severeCodes.includes(weatherCode)) {
+        severeWeatherAlert = 'SEVERE WEATHER ALERT! ';
+      }
+    }
+    
+    // Gender context
+    if (gender === "neutral") {
+      genderContext = ' Use gender-neutral clothing terms (shirts, pants, coats, etc.) - avoid gender-specific items.';
+    }
+    
+    // Weather context
+    if (missingData && missingData.includes('weather')) {
+      const currentMonth = new Date().getMonth();
+      const season = currentMonth >= 2 && currentMonth <= 4 ? 'spring' : 
+                    currentMonth >= 5 && currentMonth <= 7 ? 'summer' :
+                    currentMonth >= 8 && currentMonth <= 10 ? 'fall' : 'winter';
+      
+      weatherContext = ` No weather data available. Base recommendation on ${season} season and current time of day.`;
+    } else {
+      weatherContext = ` Weather: ${temperature}°F${todayHigh ? ` (${todayLow}°F-${todayHigh}°F)` : ''}, ${condition}, ${chanceOfRain}% rain chance`;
+    }
     
     // Time-based context
     switch (timeOfDay) {
       case 'morning':
-        timeContext = 'It\'s morning, so recommend an outfit for the day ahead.';
+        timeContext = 'morning outfit for the day ahead';
         break;
       case 'afternoon':
-        timeContext = 'It\'s afternoon, so recommend an outfit for the rest of the day.';
+        timeContext = 'outfit for the rest of the day';
         break;
       case 'evening':
-        timeContext = 'It\'s evening, so recommend an outfit for evening activities.';
+        timeContext = 'evening outfit';
         break;
       case 'night':
         if (recommendationType === 'tomorrow') {
-          timeContext = 'It\'s late, so recommend an outfit to lay out for tomorrow morning.';
+          timeContext = 'outfit to prepare for tomorrow';
         } else {
-          timeContext = 'It\'s late evening, so recommend comfortable evening wear.';
+          timeContext = 'evening wear';
         }
         break;
       default:
-        timeContext = 'Recommend an appropriate outfit for the current time.';
+        timeContext = 'appropriate outfit for the current time';
     }
     
     // Add forecast context if available
-    if (forecast.length > 0) {
+    if (forecast && forecast.length > 0) {
       const tomorrow = forecast.find(day => day.day === 'Tomorrow');
       if (tomorrow) {
-        forecastContext = ` Tomorrow's forecast: ${tomorrow.high}°F high, ${tomorrow.low}°F low, ${tomorrow.condition}.`;
+        forecastContext = ` Tomorrow: ${tomorrow.high}°F high, ${tomorrow.low}°F low, ${tomorrow.condition}.`;
       }
     }
     
-    return `Based on the current weather conditions, suggest an appropriate outfit:
+    return `You are a smart mirror fashion advisor. Provide a ${timeContext} recommendation.${weatherContext}${forecastContext}${genderContext}
 
-Weather Details:
-- Current Temperature: ${temperature}°F
-- Today's Range: ${todayHigh ? `${todayLow}°F - ${todayHigh}°F` : 'Unknown'}
-- Condition: ${condition}
-- Chance of Rain: ${chanceOfRain}%
-- Humidity: ${humidity || 'Unknown'}%
-- Wind: ${windSpeed || 'Unknown'} mph ${windDirection || ''}
-- UV Index: ${uvIndex || 'Unknown'}
-- Visibility: ${visibility || 'Unknown'} miles
-- Feels Like: ${feelsLike || 'Unknown'}°F
-- Location: ${location}
-- Time: ${timeOfDay}
-- Recommendation: ${recommendationType === 'tomorrow' ? 'for tomorrow' : 'for now'}${forecastContext}
+IMPORTANT: Follow this exact format and priority order:
 
-Context: ${timeContext}
+1. SEVERE WEATHER ALERTS FIRST (if any): "${severeWeatherAlert}Severe Thunderstorms! Stay inside or gear up." or "High UV Alert! Sun protection essential." or "Air Quality Alert! Limit time outdoors."
 
-Please provide a friendly, practical outfit recommendation that considers:
-1. Current temperature and today's temperature range
-2. Weather conditions (rain, snow, wind, etc.)
-3. Humidity and comfort factors
-4. UV protection needs
-5. Wind and visibility considerations
-6. Time of day and activities
-7. Any specific items to consider or avoid
+2. ESSENTIAL ITEMS (if needed): "Bring an umbrella!" or "Put on your winter coat!" or "Grab sunglasses!"
 
-Keep the recommendation concise (under 100 words) and encouraging. This is for a smart mirror display.`;
+3. MAIN OUTFIT: "Wear [specific items] today"
+
+4. BRIEF REASONING: "it'll be [temperature/condition summary]"
+
+Example good response: "Bring an umbrella! Wear jeans and a light jacket today - it'll be cool and rainy."
+
+Example with alert: "High UV Alert! Wear sunscreen and a hat. Light shirt and shorts today - sunny and warm."
+
+Keep under 60 words. Be direct and actionable. No greetings or fluff.`;
   }
 
   /**
@@ -105,7 +125,24 @@ Keep the recommendation concise (under 100 words) and encouraging. This is for a
    * @returns {string} - Formatted prompt for AI
    */
   static generateMotivationPrompt(timeOfDay = 'morning', mood = 'neutral') {
-    return `Give me a brief, encouraging ${timeOfDay} motivation message. Keep it under 100 words and make it feel personal and uplifting. Consider that this is for someone using a smart mirror.`;
+    return `You are a smart mirror motivation advisor. Provide a brief, direct ${timeOfDay} motivation message.
+
+IMPORTANT RULES:
+- NO greetings like "Hello radiant soul" or "Looking good!"
+- NO introductory phrases
+- Go straight to the wisdom/motivation
+- Keep under 30 words
+- Be direct and impactful
+- Consider this is for a smart mirror display
+
+Example good responses:
+- "Every frustration is an opportunity to learn something new."
+- "You will be stronger tomorrow than you are today."
+- "Small actions create big changes. Your potential is limitless."
+
+Example bad response: "Hello radiant soul! Looking good today! You're halfway through the week! Here's some wisdom for you..."
+
+Focus on actionable wisdom, not fluff.`;
   }
 
 

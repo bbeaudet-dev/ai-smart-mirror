@@ -35,7 +35,17 @@ Module.register("ai-motivation", {
       }
 
       const data = await response.json();
-      this.motivationData = data;
+      
+      // Sanitize the motivation text - remove quotes and ensure single line
+      let motivationText = data.motivation || "Unable to get motivational message";
+      motivationText = motivationText.replace(/^["']|["']$/g, ''); // Remove leading/trailing quotes
+      motivationText = motivationText.split('\n')[0]; // Take only first line
+      motivationText = motivationText.split('.')[0]; // Take only first sentence
+      
+      this.motivationData = {
+        ...data,
+        motivation: motivationText
+      };
       this.updateDom();
     } catch (error) {
       Log.error("Motivation fetch failed:", error);

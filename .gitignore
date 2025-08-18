@@ -88,3 +88,7 @@ js/positions.js
 # Ignore lock files other than package-lock.json
 pnpm-lock.yaml
 yarn.lock
+
+# Environment
+.env
+*/.env

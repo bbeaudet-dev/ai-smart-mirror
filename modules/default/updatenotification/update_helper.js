@@ -56,7 +56,7 @@ class Updater {
 
 	// [main command] parse if module update is needed
 	async parse (modules) {
-		var parser = modules.map(async (module) => {
+		const parser = modules.map(async (module) => {
 			if (this.moduleList[module.module] === undefined) {
 				this.moduleList[module.module] = {};
 				this.moduleList[module.module].name = module.module;
@@ -80,7 +80,7 @@ class Updater {
 		});
 
 		await Promise.all(parser);
-		let updater = Object.values(this.moduleList);
+		const updater = Object.values(this.moduleList);
 		Log.debug("updatenotification Update Result:", updater);
 		return updater;
 	}
@@ -95,7 +95,7 @@ class Updater {
 	 * };
 	 */
 	updateProcess (module) {
-		let Result = {
+		const Result = {
 			error: false,
 			updated: false,
 			needRestart: false

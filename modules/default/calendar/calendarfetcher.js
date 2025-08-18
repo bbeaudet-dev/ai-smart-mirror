@@ -31,7 +31,7 @@ const CalendarFetcher = function (url, reloadInterval, excludedEvents, maximumEn
 		reloadTimer = null;
 		const nodeVersion = Number(process.version.match(/^v(\d+\.\d+)/)[1]);
 		let httpsAgent = null;
-		let headers = {
+		const headers = {
 			"User-Agent": `Mozilla/5.0 (Node.js ${nodeVersion}) MagicMirror/${global.version}`
 		};
 

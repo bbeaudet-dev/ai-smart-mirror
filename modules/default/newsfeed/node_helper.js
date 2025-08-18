@@ -48,7 +48,7 @@ module.exports = NodeHelper.create({
 
 			fetcher.onError((fetcher, error) => {
 				Log.error("Newsfeed Error. Could not fetch newsfeed: ", url, error);
-				let error_type = NodeHelper.checkFetchError(error);
+				const error_type = NodeHelper.checkFetchError(error);
 				this.sendSocketNotification("NEWSFEED_ERROR", {
 					error_type
 				});
@@ -71,7 +71,7 @@ module.exports = NodeHelper.create({
 	 */
 	broadcastFeeds () {
 		const feeds = {};
-		for (let f in this.fetchers) {
+		for (const f in this.fetchers) {
 			feeds[f] = this.fetchers[f].items();
 		}
 		this.sendSocketNotification("NEWS_ITEMS", feeds);

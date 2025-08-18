@@ -80,10 +80,10 @@ WeatherProvider.register("smhi", {
 	 * @returns {object} The weatherdata closest to the current time
 	 */
 	getClosestToCurrentTime (times) {
-		let now = moment();
+		const now = moment();
 		let minDiff = undefined;
 		for (const time of times) {
-			let diff = Math.abs(moment(time.validTime).diff(now));
+			const diff = Math.abs(moment(time.validTime).diff(now));
 			if (!minDiff || diff < Math.abs(moment(minDiff.validTime).diff(now))) {
 				minDiff = time;
 			}
@@ -128,7 +128,7 @@ WeatherProvider.register("smhi", {
 	 * @returns {WeatherObject} The converted weatherdata at the specified location
 	 */
 	convertWeatherDataToObject (weatherData, coordinates) {
-		let currentWeather = new WeatherObject();
+		const currentWeather = new WeatherObject();
 
 		currentWeather.date = moment(weatherData.validTime);
 		currentWeather.updateSunTime(coordinates.lat, coordinates.lon);
@@ -144,7 +144,7 @@ WeatherProvider.register("smhi", {
 		 * weatherObject with it, the valuetype to use can be configured or uses
 		 * median as default.
 		 */
-		let precipitationValue = this.paramValue(weatherData, this.config.precipitationValue);
+		const precipitationValue = this.paramValue(weatherData, this.config.precipitationValue);
 		switch (this.paramValue(weatherData, "pcat")) {
 			// 0 = No precipitation
 			case 1: // Snow
@@ -177,9 +177,9 @@ WeatherProvider.register("smhi", {
 	 */
 	convertWeatherDataGroupedBy (allWeatherData, coordinates, groupBy = "day") {
 		let currentWeather;
-		let result = [];
+		const result = [];
 
-		let allWeatherObjects = this.fillInGaps(allWeatherData).map((weatherData) => this.convertWeatherDataToObject(weatherData, coordinates));
+		const allWeatherObjects = this.fillInGaps(allWeatherData).map((weatherData) => this.convertWeatherDataToObject(weatherData, coordinates));
 		let dayWeatherTypes = [];
 
 		for (const weatherObject of allWeatherObjects) {
@@ -235,14 +235,14 @@ WeatherProvider.register("smhi", {
 	 * @returns {object[]} Given data with filled gaps
 	 */
 	fillInGaps (data) {
-		let result = [];
+		const result = [];
 		for (let i = 1; i < data.length; i++) {
-			let to = moment(data[i].validTime);
-			let from = moment(data[i - 1].validTime);
-			let hours = moment.duration(to.diff(from)).asHours();
+			const to = moment(data[i].validTime);
+			const from = moment(data[i - 1].validTime);
+			const hours = moment.duration(to.diff(from)).asHours();
 			// For each hour add a datapoint but change the validTime
 			for (let j = 0; j < hours; j++) {
-				let current = Object.assign({}, data[i]);
+				const current = Object.assign({}, data[i]);
 				current.validTime = from.clone().add(j, "hours").toISOString();
 				result.push(current);
 			}

@@ -111,14 +111,14 @@ WeatherProvider.register("ukmetofficedatahub", {
 		const currentWeather = new WeatherObject();
 
 		// Extract the actual forecasts
-		let forecastDataHours = currentWeatherData.features[0].properties.timeSeries;
+		const forecastDataHours = currentWeatherData.features[0].properties.timeSeries;
 
 		// Define now
-		let nowUtc = moment.utc();
+		const nowUtc = moment.utc();
 
 		// Find hour that contains the current time
-		for (let hour in forecastDataHours) {
-			let forecastTime = moment.utc(forecastDataHours[hour].time);
+		for (const hour in forecastDataHours) {
+			const forecastTime = moment.utc(forecastDataHours[hour].time);
 			if (nowUtc.isSameOrAfter(forecastTime) && nowUtc.isBefore(moment(forecastTime.add(1, "h")))) {
 				currentWeather.date = forecastTime;
 				currentWeather.windSpeed = forecastDataHours[hour].windSpeed10m;
@@ -187,17 +187,17 @@ WeatherProvider.register("ukmetofficedatahub", {
 		const dailyForecasts = [];
 
 		// Extract the actual forecasts
-		let forecastDataDays = forecasts.features[0].properties.timeSeries;
+		const forecastDataDays = forecasts.features[0].properties.timeSeries;
 
 		// Define today
-		let today = moment.utc().startOf("date");
+		const today = moment.utc().startOf("date");
 
 		// Go through each day in the forecasts
-		for (let day in forecastDataDays) {
+		for (const day in forecastDataDays) {
 			const forecastWeather = new WeatherObject();
 
 			// Get date of forecast
-			let forecastDate = moment.utc(forecastDataDays[day].time);
+			const forecastDate = moment.utc(forecastDataDays[day].time);
 
 			// Check if forecast is for today or in the future (i.e., ignore yesterday's forecast)
 			if (forecastDate.isSameOrAfter(today)) {

@@ -60,7 +60,7 @@ class GitHelper {
 	}
 
 	async getStatusInfo (repo) {
-		let gitInfo = {
+		const gitInfo = {
 			module: repo.module,
 			behind: 0, // commits behind
 			current: "", // branch name
@@ -193,7 +193,7 @@ class GitHelper {
 	}
 
 	async checkUpdates () {
-		var updates = [];
+		const updates = [];
 
 		const allRepos = await this.gitResultList.map((module) => {
 			return new Promise((resolve) => {

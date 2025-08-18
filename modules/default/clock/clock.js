@@ -119,6 +119,7 @@ Module.register("clock", {
 		hoursWrapper.className = "clock-hour-digital";
 		minutesWrapper.className = "clock-minute-digital";
 		secondsWrapper.className = "clock-second-digital dimmed";
+		periodWrapper.className = "clock-period-digital";
 		sunWrapper.className = "sun dimmed small";
 		moonWrapper.className = "moon dimmed small";
 		weekWrapper.className = "week dimmed medium";

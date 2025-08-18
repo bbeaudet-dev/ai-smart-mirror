@@ -294,7 +294,7 @@ WeatherProvider.register("envcanada", {
 		let lastDate = moment(baseDate, "YYYYMMDDhhmmss");
 
 		for (let stepDay = nextDay; stepDay < lastDay; stepDay += 2) {
-			let weather = new WeatherObject();
+			const weather = new WeatherObject();
 
 			// Add 1 to the date to reflect the current forecast day we are building
 			lastDate = lastDate.add(1, "day");

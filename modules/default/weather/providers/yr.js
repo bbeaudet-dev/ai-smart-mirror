@@ -102,7 +102,7 @@ WeatherProvider.register("yr", {
 	getWeatherDataFromYrOrCache (resolve, reject) {
 		localStorage.setItem("yrIsFetchingWeatherData", "true");
 
-		let weatherData = this.getWeatherDataFromCache();
+		const weatherData = this.getWeatherDataFromCache();
 		if (this.weatherDataIsValid(weatherData)) {
 			localStorage.removeItem("yrIsFetchingWeatherData");
 			Log.debug("Weather data found in cache.");
@@ -186,8 +186,8 @@ WeatherProvider.register("yr", {
 			throw new Error("Longitude not provided.");
 		}
 
-		let lat = this.config.lat.toString();
-		let lon = this.config.lon.toString();
+		const lat = this.config.lat.toString();
+		const lon = this.config.lon.toString();
 		const altitude = this.config.altitude ?? 0;
 		return { lat, lon, altitude };
 	},
@@ -245,7 +245,7 @@ WeatherProvider.register("yr", {
 	getStellarDataFromYrOrCache (resolve, reject) {
 		localStorage.setItem("yrIsFetchingStellarData", "true");
 
-		let stellarData = this.getStellarDataFromCache();
+		const stellarData = this.getStellarDataFromCache();
 		const today = moment().format("YYYY-MM-DD");
 		const tomorrow = moment().add(1, "days").format("YYYY-MM-DD");
 		if (stellarData && stellarData.today && stellarData.today.date === today && stellarData.tomorrow && stellarData.tomorrow.date === tomorrow) {
@@ -586,7 +586,7 @@ WeatherProvider.register("yr", {
 				if (!minTemperature || timeseries.data.next_6_hours.details.air_temperature_min < minTemperature) minTemperature = timeseries.data.next_6_hours.details.air_temperature_min;
 				if (!maxTemperature || maxTemperature < timeseries.data.next_6_hours.details.air_temperature_max) maxTemperature = timeseries.data.next_6_hours.details.air_temperature_max;
 
-				let closestTime = Math.abs(moment(timeseries.time).local().set({ hour: 8, minute: 0, second: 0, millisecond: 0 }).diff(moment(timeseries.time).local()));
+				const closestTime = Math.abs(moment(timeseries.time).local().set({ hour: 8, minute: 0, second: 0, millisecond: 0 }).diff(moment(timeseries.time).local()));
 				if ((forecastDiffToEight === undefined || closestTime < forecastDiffToEight) && timeseries.data.next_12_hours) {
 					forecastDiffToEight = closestTime;
 					forecast = timeseries;

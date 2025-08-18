@@ -1,57 +1,138 @@
-<<<<<<< HEAD
 # AI Smart Mirror
-=======
-# ![MagicMirror²: The open source modular smart mirror platform.](.github/header.png)
 
-<p style="text-align: center">
-  <a href="https://choosealicense.com/licenses/mit">
-  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
- </a>
- <img src="https://img.shields.io/github/actions/workflow/status/magicmirrororg/magicmirror/automated-tests.yaml" alt="GitHub Actions">
- <img src="https://img.shields.io/github/check-runs/magicmirrororg/magicmirror/master" alt="Build Status">
- <a href="https://github.com/MagicMirrorOrg/MagicMirror">
-  <img src="https://img.shields.io/github/stars/magicmirrororg/magicmirror?style=social" alt="GitHub Stars">
- </a>
-</p>
+An intelligent smart mirror built on MagicMirror² that combines traditional smart mirror functionality with AI-powered features like outfit recommendations, motivational messages, and more.
 
-**MagicMirror²** is an open source modular smart mirror platform. With a growing list of installable modules, the **MagicMirror²** allows you to convert your hallway or bathroom mirror into your personal assistant. **MagicMirror²** is built by the creator of [the original MagicMirror](https://michaelteeuw.nl/tagged/magicmirror) with the incredible help of a [growing community of contributors](https://github.com/MagicMirrorOrg/MagicMirror/graphs/contributors).
+## Features
 
-MagicMirror² focuses on a modular plugin system and uses [Electron](https://www.electronjs.org/) as an application wrapper. So no more web server or browser installs necessary!
+### Core Smart Mirror Features
+- **Clock & Date**: 12-hour format with AM/PM display
+- **Weather**: Current conditions and forecasts with rounded temperatures
+- **Calendar**: US Holidays and upcoming events
+- **News Feed**: Latest headlines from New York Times
+- **Compliments**: Daily positive messages
 
-## Documentation
+### AI-Powered Features
+- **AI Motivation**: Personalized daily inspiration messages
+- **AI Outfit Recommendations**: Weather-aware clothing suggestions
+- **Smart Context**: Considers time of day, weather, and user preferences
 
-For the full documentation including **[installation instructions](https://docs.magicmirror.builders/getting-started/installation.html)**, please visit our dedicated documentation website: [https://docs.magicmirror.builders](https://docs.magicmirror.builders).
+## Quick Start
 
-## Links
+### Prerequisites
+- Node.js 22.x or higher
+- Raspberry Pi 5 (recommended) or any computer with display
 
-- Website: [https://magicmirror.builders](https://magicmirror.builders)
-- Documentation: [https://docs.magicmirror.builders](https://docs.magicmirror.builders)
-- Forum: [https://forum.magicmirror.builders](https://forum.magicmirror.builders)
-  - Technical discussions: <https://forum.magicmirror.builders/category/11/core-system>
-- Discord: [https://discord.gg/J5BAtvx](https://discord.gg/J5BAtvx)
-- Blog: [https://michaelteeuw.nl/tagged/magicmirror](https://michaelteeuw.nl/tagged/magicmirror)
-- Donations: [https://magicmirror.builders/#donate](https://magicmirror.builders/#donate)
+### Installation
 
-## Contributing Guidelines
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd ai-smart-mirror
+   ```
 
-Contributions of all kinds are welcome, not only in the form of code but also with regards to
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-- bug reports
-- documentation
-- translations
+3. **Configure environment**
+   ```bash
+   # Copy and edit environment files
+   cp env.example .env
+   cp server/env.example server/.env
+   ```
 
-For the full contribution guidelines, check out: [https://docs.magicmirror.builders/about/contributing.html](https://docs.magicmirror.builders/about/contributing.html)
+4. **Start the backend server**
+   ```bash
+   cd server
+   npm install
+   npm start
+   ```
 
-## Enjoying MagicMirror? Consider a donation!
+5. **Start the smart mirror**
+   ```bash
+   # In a new terminal, from the root directory
+   npm start
+   ```
 
-MagicMirror² is Open Source and free. That doesn't mean we don't need any money.
+6. **Access your mirror**
+   Open a web browser and go to: `http://localhost:8080`
 
-Please consider a donation to help us cover the ongoing costs like webservers and email services.
-If we receive enough donations we might even be able to free up some working hours and spend some extra time improving the MagicMirror² core.
+## Configuration
 
-To donate, please follow [this](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=G5D8E9MR5DTD2&source=url) link.
+### User Profile
+Edit `config/config.js` to set your preferences:
+```javascript
+userProfile: {
+  gender: "male", // "male", "female", "non-binary"
+  location: "New York",
+  stylePreferences: {
+    weekday: "smart-casual",
+    weekend: "casual",
+    holiday: "festive"
+  }
+}
+```
 
-<p style="text-align: center">
-  <a href="https://forum.magicmirror.builders/topic/728/magicmirror-is-voted-number-1-in-the-magpi-top-50"><img src="https://magicmirror.builders/img/magpi-best-watermark-custom.png" width="150" alt="MagPi Top 50"></a>
-</p>
->>>>>>> magicmirror/master
+### Weather Location
+Update the coordinates in `config/config.js`:
+```javascript
+lat: 40.776676, // Your latitude
+lon: -73.971321, // Your longitude
+```
+
+### API Keys
+Set up your `.env` files with:
+- `OPENAI_API_KEY`: For AI features
+- Weather API credentials (if needed)
+
+## Project Structure
+
+```
+ai-smart-mirror/
+├── config/           # MagicMirror configuration
+├── modules/          # Custom AI modules
+│   ├── ai-motivation/
+│   └── ai-outfit/
+├── server/           # Node.js backend API
+├── docs/             # Documentation
+└── public/           # Static assets
+```
+
+## AI Modules
+
+### AI Motivation
+- Provides daily inspirational messages
+- Updates every minute
+- Positioned at top center
+
+### AI Outfit Recommendations
+- Weather-aware clothing suggestions
+- Considers user preferences and context
+- Updates every 15 minutes
+- Positioned at top right
+
+## Development
+
+### Adding New AI Modules
+1. Create a new directory in `modules/`
+2. Implement the module following MagicMirror² conventions
+3. Add API endpoints in `server/routes/`
+4. Update `config/config.js` to include the module
+
+### Backend API
+The Node.js server provides REST endpoints for AI features:
+- `POST /api/ai/motivation` - Get motivational messages
+- `POST /api/ai/outfit-recommendation` - Get outfit recommendations
+
+## Raspberry Pi Setup
+
+For detailed Raspberry Pi setup instructions, see [docs/PI-SETUP.md](docs/PI-SETUP.md).
+
+## Contributing
+
+This is a personal project, but suggestions and improvements are welcome!
+
+## License
+
+This project is built on MagicMirror² and is licensed under the MIT License.

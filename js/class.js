@@ -21,7 +21,7 @@
 
 	// Create a new Class that inherits from this class
 	Class.extend = function (prop) {
-		let _super = this.prototype;
+		const _super = this.prototype;
 
 		/*
 		 * Instantiate a base class (but only create the instance,

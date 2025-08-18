@@ -53,7 +53,7 @@ process.on("uncaughtException", function (err) {
  * @class
  */
 function App () {
-	let nodeHelpers = [];
+	const nodeHelpers = [];
 	let httpServer;
 
 	/**
@@ -103,7 +103,7 @@ function App () {
 				Log.log(`${configEnvFile} does not exist. ${err.message}`);
 			}
 
-			let options = {
+			const options = {
 				all: true,
 				diff: false,
 				envFiles: envFiles,
@@ -221,7 +221,7 @@ function App () {
 				Log.error(`Error when loading ${moduleName}:`, e.message);
 				return;
 			}
-			let m = new Module();
+			const m = new Module();
 
 			if (m.requiresVersion) {
 				Log.log(`Check MagicMirror² version for node helper '${moduleName}' - Minimum version: ${m.requiresVersion} - Current version: ${global.version}`);
@@ -249,7 +249,7 @@ function App () {
 	async function loadModules (modules) {
 		Log.log("Loading module helpers ...");
 
-		for (let module of modules) {
+		for (const module of modules) {
 			await loadModule(module);
 		}
 
@@ -294,7 +294,7 @@ function App () {
 		// get the used module positions
 		Utils.getModulePositions();
 
-		let modules = [];
+		const modules = [];
 		for (const module of config.modules) {
 			if (module.disabled) continue;
 			if (module.module) {
@@ -320,7 +320,7 @@ function App () {
 		Log.log("Server started ...");
 
 		const nodePromises = [];
-		for (let nodeHelper of nodeHelpers) {
+		for (const nodeHelper of nodeHelpers) {
 			nodeHelper.setExpressApp(app);
 			nodeHelper.setSocketIO(io);
 
@@ -356,7 +356,7 @@ function App () {
 	 */
 	this.stop = async function () {
 		const nodePromises = [];
-		for (let nodeHelper of nodeHelpers) {
+		for (const nodeHelper of nodeHelpers) {
 			try {
 				if (typeof nodeHelper.stop === "function") {
 					nodePromises.push(nodeHelper.stop());

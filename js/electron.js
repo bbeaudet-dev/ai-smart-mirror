@@ -43,9 +43,9 @@ function createWindow () {
 		Log.warn("Could not get display size, using defaults ...");
 	}
 
-	let electronSwitchesDefaults = ["autoplay-policy", "no-user-gesture-required"];
+	const electronSwitchesDefaults = ["autoplay-policy", "no-user-gesture-required"];
 	app.commandLine.appendSwitch(...new Set(electronSwitchesDefaults, config.electronSwitches));
-	let electronOptionsDefaults = {
+	const electronOptionsDefaults = {
 		width: electronSize.width,
 		height: electronSize.height,
 		icon: "mm2.png",
@@ -108,7 +108,7 @@ function createWindow () {
 		prefix = "http://";
 	}
 
-	let address = (config.address === void 0) | (config.address === "") | (config.address === "0.0.0.0") ? (config.address = "localhost") : config.address;
+	const address = (config.address === void 0) | (config.address === "") | (config.address === "0.0.0.0") ? (config.address = "localhost") : config.address;
 	const port = process.env.MM_PORT || config.port;
 	mainWindow.loadURL(`${prefix}${address}:${port}`);
 

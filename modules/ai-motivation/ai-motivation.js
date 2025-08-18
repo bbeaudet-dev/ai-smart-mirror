@@ -53,10 +53,10 @@ Module.register("ai-motivation", {
 
   getTimeOfDay() {
     const hour = new Date().getHours();
-    if (hour < 5) return 'night';
-    if (hour < 12) return 'morning';
-    if (hour < 17) return 'afternoon';
-    if (hour < 21) return 'evening';
+    if (hour < 5) {return 'night';}
+    if (hour < 12) {return 'morning';}
+    if (hour < 17) {return 'afternoon';}
+    if (hour < 21) {return 'evening';}
     return 'night';
   },
 

@@ -19,7 +19,7 @@ const fetch_timeout = process.env.mmFetchTimeout !== undefined ? process.env.mmF
 // Get version number.
 global.version = require(`${__dirname}/../package.json`).version;
 global.mmTestMode = process.env.mmTestMode === "true";
-Log.log(`Starting MagicMirror: v${global.version}`);
+Log.log(`Starting AI Smart Mirror: v${global.version}`);
 
 // Log system information.
 Utils.logSystemInformation();
@@ -32,7 +32,6 @@ if (process.env.MM_CONFIG_FILE) {
 }
 
 // FIXME: Hotfix Pull Request
-// https://github.com/MagicMirrorOrg/MagicMirror/pull/673
 if (process.env.MM_PORT) {
 	global.mmPort = process.env.MM_PORT;
 }

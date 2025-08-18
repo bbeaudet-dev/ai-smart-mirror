@@ -3,9 +3,10 @@
 Module.register("ai-motivation", {
   defaults: {
     updateInterval: 600000, // 10 minutes
-    apiEndpoint: "http://localhost:5000/api/ai/motivation",
+    apiEndpoint: "http://localhost:5001/api/ai/motivation",
     timeOfDay: "morning",
-    mood: "neutral"
+    mood: "neutral",
+    showTimestamp: false
   },
 
   motivationData: null,
@@ -38,12 +39,8 @@ Module.register("ai-motivation", {
       this.updateDom();
     } catch (error) {
       Log.error("Motivation fetch failed:", error);
-      // Set error state so we can show it in the UI
-      this.motivationData = {
-        motivation: "Unable to connect to AI server",
-        timeOfDay: this.getTimeOfDay(),
-        timestamp: new Date().toISOString()
-      };
+      // Don't show anything if we can't get real data
+      this.motivationData = null;
       this.updateDom();
     }
   },
@@ -67,21 +64,22 @@ Module.register("ai-motivation", {
     const wrapper = document.createElement("div");
     wrapper.className = "ai-motivation";
 
-    // Always show the header
-    let content = '<div class="motivation-title">Daily Inspiration</div>';
-    
     if (!this.motivationData) {
-      content += '<div class="motivation-content">Loading AI motivation...</div>';
-      content += '<div class="motivation-note">Backend server may not be running</div>';
-    } else if (this.motivationData.motivation === "Unable to connect to AI server") {
-      content += '<div class="motivation-content error">Unable to connect to AI server</div>';
-      content += '<div class="motivation-note">Start backend server: npm run server</div>';
+      wrapper.innerHTML = `
+        <div class="motivation-title">Daily Inspiration</div>
+        <div class="motivation-content">Loading...</div>
+      `;
     } else {
+      let content = `<div class="motivation-title">Daily Inspiration</div>`;
       content += `<div class="motivation-content">${this.motivationData.motivation}</div>`;
-      content += `<div class="motivation-timestamp">Updated: ${new Date(this.motivationData.timestamp).toLocaleTimeString()}</div>`;
+      
+      if (this.config.showTimestamp) {
+        content += `<div class="motivation-timestamp">Updated: ${new Date(this.motivationData.timestamp).toLocaleTimeString()}</div>`;
+      }
+      
+      wrapper.innerHTML = content;
     }
 
-    wrapper.innerHTML = content;
     return wrapper;
   },
 

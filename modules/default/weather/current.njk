@@ -74,7 +74,7 @@
                     {% if config.showHumidity === "feelslike" %}
                         {{ humidity() }}
                     {% endif %}
-                    {{ "FEELS" | translate({DEGREE: current.feelsLike() | roundValue | unit("temperature") | decimalSymbol }) }}
+                    FEELS LIKE {{ current.feelsLike() | roundValue | unit("temperature") | decimalSymbol }}
                 </span>
                 <br />
             {% endif %}

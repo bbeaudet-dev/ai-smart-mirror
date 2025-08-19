@@ -6,6 +6,17 @@
   transform: translate(0, -3px);
 }
 
+/* Make location header larger to match sunrise/sunset font size */
+.weather .header {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+/* Make feels like text smaller to match sunrise/sunset font size */
+.weather .feelslike {
+  font-size: 0.8em;
+}
+
 .weather .humidity-icon {
   padding-right: 4px;
 }

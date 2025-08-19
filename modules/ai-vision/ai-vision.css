@@ -1,0 +1,107 @@
+.ai-vision {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.vision-title {
+  font-size: 1.2em;
+  color: #fff;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.vision-content {
+  color: #e8f4fd;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  font-size: 0.95em;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.vision-note {
+  color: #aaa;
+  font-size: 0.85em;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+.vision-timestamp {
+  color: #888;
+  font-size: 0.8em;
+  text-align: right;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* Camera status indicators */
+.vision-content:contains("Camera disabled") {
+  color: #ff6b6b;
+}
+
+.vision-content:contains("Ready to analyze") {
+  color: #51cf66;
+}
+
+/* Animation for vision updates */
+.ai-vision {
+  transition: all 0.3s ease-in-out;
+}
+
+.ai-vision:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Camera capture animation */
+@keyframes capture-flash {
+  0% { background: rgba(0, 0, 0, 0.8); }
+  50% { background: rgba(255, 255, 255, 0.2); }
+  100% { background: rgba(0, 0, 0, 0.8); }
+}
+
+.ai-vision.capturing {
+  animation: capture-flash 0.5s ease-in-out;
+}
+
+/* Responsive design for different screen sizes */
+@media (max-width: 768px) {
+  .ai-vision {
+    max-width: 350px;
+    padding: 15px;
+  }
+  
+  .vision-title {
+    font-size: 1.1em;
+  }
+  
+  .vision-content {
+    font-size: 0.9em;
+  }
+  
+  .vision-note {
+    font-size: 0.8em;
+  }
+}
+
+/* Loading state */
+.vision-content:contains("Loading") {
+  color: #888;
+  font-style: italic;
+}
+
+/* Error state */
+.vision-content:contains("Error") {
+  color: #ff6b6b;
+  font-weight: bold;
+}

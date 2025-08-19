@@ -1,5 +1,3 @@
-/* global Module, Log */
-
 Module.register("ai-outfit", {
   defaults: {
     updateInterval: 900000, // 15 minutes
@@ -57,13 +55,23 @@ Module.register("ai-outfit", {
         }
       }
 
-      // Always create a request body, even with missing data
+      // Only make API request if we have the required weather data
+      if (!weatherData || !weatherData.temperature || !weatherData.condition) {
+        info("AI Outfit: Missing required weather data, skipping API request");
+        this.outfitData = {
+          recommendation: "Weather data unavailable - waiting for current conditions",
+          missingData: missingData
+        };
+        this.updateDom();
+        return;
+      }
+
       const requestBody = {
-        temperature: weatherData?.temperature,
-        condition: weatherData?.condition,
-        weatherCode: weatherData?.weatherCode,
-        chanceOfRain: weatherData?.chanceOfRain,
-        location: weatherData?.location || "current location",
+        temperature: weatherData.temperature,
+        condition: weatherData.condition,
+        weatherCode: weatherData.weatherCode,
+        chanceOfRain: weatherData.chanceOfRain,
+        location: weatherData.location || "current location",
         timeOfDay: this.getTimeOfDay(),
         recommendationType: this.getRecommendationType(),
         gender: userProfile.gender || "neutral",
@@ -102,7 +110,7 @@ Module.register("ai-outfit", {
       this.weatherData = weatherData;
       this.updateDom();
     } catch (error) {
-      Log.error("Outfit recommendation fetch failed:", error);
+      _error("Outfit recommendation fetch failed:", error);
       
       // SCENARIO 2 & 3: Network/server error - AI call failed completely
       // This happens when:
@@ -127,7 +135,16 @@ Module.register("ai-outfit", {
   // Listen for weather updates to automatically refresh recommendations
   notificationReceived (notification, payload, sender) {
     if (notification === "WEATHER_UPDATED" && sender.name === "weather") {
-      Log.info("AI Outfit: Weather data updated, refreshing recommendation");
+      // Store the weather data from the notification
+      if (payload && payload.currentWeather) {
+        this.weatherData = {
+          temperature: payload.currentWeather.temperature,
+          condition: payload.currentWeather.weatherType,
+          weatherCode: payload.currentWeather.weatherCode,
+          chanceOfRain: payload.currentWeather.precipitation,
+          location: payload.locationName
+        };
+      }
       this.fetchOutfitRecommendation();
     }
   },
@@ -214,12 +231,6 @@ Module.register("ai-outfit", {
       `;
     } else {
       let content = `<div class="outfit-title">Today's Style</div>`;
-      
-      if (this.config.showWeather && this.weatherData) {
-        const temp = this.weatherData.temperature;
-        const condition = this.weatherData.condition || this.weatherData.weatherType || "clear";
-        content += `<div class="outfit-weather">${temp}°F, ${condition}</div>`;
-      }
       
       content += `<div class="outfit-content">${this.outfitData.recommendation}</div>`;
       

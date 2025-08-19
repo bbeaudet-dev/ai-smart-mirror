@@ -74,6 +74,7 @@ let config = {
 		{
 			module: "weather",
 			position: "top_right",
+			header: "",
 			config: {
 				weatherProvider: "openmeteo",
 				type: "current",
@@ -86,14 +87,15 @@ let config = {
 		{
 			module: "weather",
 			position: "top_right",
-			header: "Weather Forecast",
+			header: "Weekly Forecast",
 			config: {
 				weatherProvider: "openmeteo",
 				type: "forecast",
 				lat: 40.776676, // New York coordinates - change these for your location
 				lon: -73.971321,
 				units: "imperial",
-				roundTemp: true // Round temperatures to whole numbers (no decimals)
+				roundTemp: true, // Round temperatures to whole numbers (no decimals)
+				appendLocationNameToHeader: false // Don't show location in forecast header
 			}
 		},
 		{

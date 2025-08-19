@@ -31,8 +31,6 @@ graph TD
 ```mermaid
 graph TD
     A[config/] --> B1[config.js]
-    A --> B2[en.json]
-    A --> B3[translations.js]
 
     C[js/] --> C1[app.js]
     C --> C2[main.js]

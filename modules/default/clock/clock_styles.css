@@ -112,5 +112,5 @@
 .module.clock .clock-period-digital {
   color: var(--color-text-bright);
   font-size: 0.7em; /* Make AM/PM smaller than hour/minute */
-  vertical-align: top;
+  vertical-align: bottom;
 }

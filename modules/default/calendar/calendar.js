@@ -80,17 +80,6 @@ Module.register("calendar", {
 		return ["calendarutils.js", "moment.js", "moment-timezone.js"];
 	},
 
-	// Define required translations.
-	getTranslations () {
-
-		/*
-		 * The translations for the default modules are defined in the core translation files.
-		 * Therefore we can just return false. Otherwise we should have returned a dictionary.
-		 * If you're trying to build your own module including translations, check out the documentation.
-		 */
-		return false;
-	},
-
 	// Override start method.
 	start () {
 		Log.info(`Starting module: ${this.name}`);

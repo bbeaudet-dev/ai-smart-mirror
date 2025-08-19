@@ -103,8 +103,6 @@ graph TD
     A --> G[js/]
 
     B --> B1[config.js]
-    B --> B2[en.json]
-    B --> B3[translations.js]
 
     C --> C1[default/]
     C --> C2[ai-motivation/]

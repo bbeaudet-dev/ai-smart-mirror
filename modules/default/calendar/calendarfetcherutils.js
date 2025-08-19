@@ -16,11 +16,11 @@ const CalendarFetcherUtils = {
 	 * until: the date until the event should be excluded.
 	 */
 	shouldEventBeExcluded (config, title) {
-		let filter = {
+		const filter = {
 			excluded: false,
 			until: null
 		};
-		for (let f in config.excludedEvents) {
+		for (const f in config.excludedEvents) {
 			let filter = config.excludedEvents[f],
 				testTitle = title.toLowerCase(),
 				until = null,
@@ -93,8 +93,8 @@ const CalendarFetcherUtils = {
 
 		// subtract the max of the duration of this event or 1 day to find events in the past that are currently still running and should therefor be displayed.
 		const oneDayInMs = 24 * 60 * 60000;
-		let searchFromDate = pastLocalMoment.clone().subtract(Math.max(durationInMs, oneDayInMs), "milliseconds").toDate();
-		let searchToDate = futureLocalMoment.clone().add(1, "days").toDate();
+		const searchFromDate = pastLocalMoment.clone().subtract(Math.max(durationInMs, oneDayInMs), "milliseconds").toDate();
+		const searchToDate = futureLocalMoment.clone().add(1, "days").toDate();
 		Log.debug(`Search for recurring events between: ${searchFromDate} and ${searchToDate}`);
 
 		// if until is set, and its a full day event, force the time to midnight. rrule gets confused with non-00 offset
@@ -160,7 +160,7 @@ const CalendarFetcherUtils = {
 			Log.debug(`title: ${title}`);
 
 			// Return quickly if event should be excluded.
-			let { excluded, eventFilterUntil } = this.shouldEventBeExcluded(config, title);
+			const { excluded, eventFilterUntil } = this.shouldEventBeExcluded(config, title);
 			if (excluded) {
 				return;
 			}
@@ -176,7 +176,7 @@ const CalendarFetcherUtils = {
 
 			if (event.type === "VEVENT") {
 				Log.debug(`Event:\n${JSON.stringify(event, null, 2)}`);
-				let eventStartMoment = eventDate(event, "start");
+				const eventStartMoment = eventDate(event, "start");
 				let eventEndMoment;
 
 				if (typeof event.end !== "undefined") {
@@ -206,17 +206,17 @@ const CalendarFetcherUtils = {
 				// TODO This should be a seperate function.
 				if (event.rrule && typeof event.rrule !== "undefined" && !isFacebookBirthday) {
 					// Recurring event.
-					let moments = CalendarFetcherUtils.getMomentsFromRecurringEvent(event, pastLocalMoment, futureLocalMoment, durationMs);
+					const moments = CalendarFetcherUtils.getMomentsFromRecurringEvent(event, pastLocalMoment, futureLocalMoment, durationMs);
 
 					// Loop through the set of moment entries to see which recurrences should be added to our event list.
 					// TODO This should create an event per moment so we can change anything we want.
-					for (let m in moments) {
+					for (const m in moments) {
 						let curEvent = event;
 						let showRecurrence = true;
 						let recurringEventStartMoment = moments[m].tz(CalendarFetcherUtils.getLocalTimezone()).clone();
 						let recurringEventEndMoment = recurringEventStartMoment.clone().add(durationMs, "ms");
 
-						let dateKey = recurringEventStartMoment.tz("UTC").format("YYYY-MM-DD");
+						const dateKey = recurringEventStartMoment.tz("UTC").format("YYYY-MM-DD");
 
 						Log.debug("event date dateKey=", dateKey);
 						// For each date that we're checking, it's possible that there is a recurrence override for that one day.

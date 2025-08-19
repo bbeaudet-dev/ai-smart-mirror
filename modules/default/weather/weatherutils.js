@@ -149,7 +149,7 @@ const WeatherUtils = {
 	convertWeatherObjectToImperial (weatherObject) {
 		if (!weatherObject || Object.keys(weatherObject).length === 0) return null;
 
-		let imperialWeatherObject = { ...weatherObject };
+		const imperialWeatherObject = { ...weatherObject };
 
 		if (imperialWeatherObject) {
 			if (imperialWeatherObject.feelsLikeTemp) imperialWeatherObject.feelsLikeTemp = this.convertTemp(imperialWeatherObject.feelsLikeTemp, "imperial");

@@ -84,9 +84,9 @@ WeatherProvider.register("ukmetoffice", {
 		const location = currentWeatherData.SiteRep.DV.Location;
 
 		// data times are always UTC
-		let nowUtc = moment.utc();
-		let midnightUtc = nowUtc.clone().startOf("day");
-		let timeInMins = nowUtc.diff(midnightUtc, "minutes");
+		const nowUtc = moment.utc();
+		const midnightUtc = nowUtc.clone().startOf("day");
+		const timeInMins = nowUtc.diff(midnightUtc, "minutes");
 
 		// loop round each of the (5) periods, look for today (the first period may be yesterday)
 		for (const period of location.Period) {
@@ -139,7 +139,7 @@ WeatherProvider.register("ukmetoffice", {
 
 			// data times are always UTC
 			const dateStr = period.value;
-			let periodDate = moment.utc(dateStr.substr(0, 10), "YYYY-MM-DD");
+			const periodDate = moment.utc(dateStr.substr(0, 10), "YYYY-MM-DD");
 
 			// ignore if period is before today
 			if (periodDate.isSameOrAfter(moment.utc().startOf("day"))) {

@@ -80,17 +80,6 @@ Module.register("calendar", {
 		return ["calendarutils.js", "moment.js", "moment-timezone.js"];
 	},
 
-	// Define required translations.
-	getTranslations () {
-
-		/*
-		 * The translations for the default modules are defined in the core translation files.
-		 * Therefore we can just return false. Otherwise we should have returned a dictionary.
-		 * If you're trying to build your own module including translations, check out the documentation.
-		 */
-		return false;
-	},
-
 	// Override start method.
 	start () {
 		Log.info(`Starting module: ${this.name}`);
@@ -207,7 +196,7 @@ Module.register("calendar", {
 				}
 			}
 		} else if (notification === "CALENDAR_ERROR") {
-			let error_message = this.translate(payload.error_type);
+			const error_message = this.translate(payload.error_type);
 			this.error = this.translate("MODULE_CONFIG_ERROR", { MODULE_NAME: this.name, ERROR: error_message });
 			this.loaded = true;
 		}
@@ -340,12 +329,12 @@ Module.register("calendar", {
 				}
 			}
 
-			var transformedTitle = event.title;
+			let transformedTitle = event.title;
 
 			// Color events if custom color or eventClass are specified, transform title if required
 			if (this.config.customEvents.length > 0) {
-				for (let ev in this.config.customEvents) {
-					let needle = new RegExp(this.config.customEvents[ev].keyword, "gi");
+				for (const ev in this.config.customEvents) {
+					const needle = new RegExp(this.config.customEvents[ev].keyword, "gi");
 					if (needle.test(event.title)) {
 						if (typeof this.config.customEvents[ev].transform === "object") {
 							transformedTitle = CalendarUtils.titleTransform(transformedTitle, [this.config.customEvents[ev].transform]);
@@ -600,17 +589,17 @@ Module.register("calendar", {
 	 * @returns {object[]} Array with events.
 	 */
 	createEventList (limitNumberOfEntries) {
-		let now = moment();
-		let today = now.clone().startOf("day");
-		let future = now.clone().startOf("day").add(this.config.maximumNumberOfDays, "days");
+		const now = moment();
+		const today = now.clone().startOf("day");
+		const future = now.clone().startOf("day").add(this.config.maximumNumberOfDays, "days");
 
 		let events = [];
 
 		for (const calendarUrl in this.calendarData) {
 			const calendar = this.calendarData[calendarUrl];
-			let remainingEntries = this.maximumEntriesForUrl(calendarUrl);
-			let maxPastDaysCompare = now.clone().subtract(this.maximumPastDaysForUrl(calendarUrl), "days");
-			let by_url_calevents = [];
+			const remainingEntries = this.maximumEntriesForUrl(calendarUrl);
+			const maxPastDaysCompare = now.clone().subtract(this.maximumPastDaysForUrl(calendarUrl), "days");
+			const by_url_calevents = [];
 			for (const e in calendar) {
 				const event = JSON.parse(JSON.stringify(calendar[e])); // clone object
 				const eventStartDateMoment = this.timestampToMoment(event.startDate);
@@ -671,7 +660,7 @@ Module.register("calendar", {
 					event.tomorrow = this.timestampToMoment(event.startDate).isSame(now.clone().add(1, "days"), "d");
 					splitEvents.push(event);
 
-					for (let splitEvent of splitEvents) {
+					for (const splitEvent of splitEvents) {
 						if (this.timestampToMoment(splitEvent.endDate).isAfter(now) && this.timestampToMoment(splitEvent.endDate).isSameOrBefore(future)) {
 							by_url_calevents.push(splitEvent);
 						}
@@ -706,11 +695,11 @@ Module.register("calendar", {
 		 * If limitDays is set > 0, limit display to that number of days
 		 */
 		if (this.config.limitDays > 0) {
-			let newEvents = [];
+			const newEvents = [];
 			let lastDate = today.clone().subtract(1, "days");
 			let days = 0;
 			for (const ev of events) {
-				let eventDate = this.timestampToMoment(ev.startDate);
+				const eventDate = this.timestampToMoment(ev.startDate);
 
 				/*
 				 * if date of event is later than lastdate
@@ -786,9 +775,9 @@ Module.register("calendar", {
 		}
 
 		// If custom symbol is set, replace event symbol
-		for (let ev of this.config.customEvents) {
+		for (const ev of this.config.customEvents) {
 			if (typeof ev.symbol !== "undefined" && ev.symbol !== "") {
-				let needle = new RegExp(ev.keyword, "gi");
+				const needle = new RegExp(ev.keyword, "gi");
 				if (needle.test(event.title)) {
 					// Get the default prefix for this class name and add to the custom symbol provided
 					const className = this.getCalendarProperty(event.url, "symbolClassName", this.config.defaultSymbolClassName);
@@ -904,7 +893,7 @@ Module.register("calendar", {
 		if (property === "symbol" || property === "recurringSymbol" || property === "fullDaySymbol") {
 			const className = this.getCalendarProperty(url, "symbolClassName", this.config.defaultSymbolClassName);
 			if (p instanceof Array) {
-				let t = [];
+				const t = [];
 				p.forEach((n) => { t.push(className + n); });
 				p = t;
 			}

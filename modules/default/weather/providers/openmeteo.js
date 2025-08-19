@@ -225,7 +225,7 @@ WeatherProvider.register("openmeteo", {
 
 	// Generate valid query params to perform the request
 	getQueryParameters () {
-		let params = {
+		const params = {
 			latitude: this.config.lat,
 			longitude: this.config.lon,
 			timeformat: "unixtime",
